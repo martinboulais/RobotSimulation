@@ -17,7 +17,6 @@ html, body
 #left
 {
     position: absolute;
-    top: 0;
     background-color: aliceblue;
     top: 100px; bottom: 0; width: 70%;
 }
@@ -25,6 +24,10 @@ html, body
 {
     overflow: auto;
     width: 100%; height: 70%;
+}
+#map
+{
+    flex-shrink: 0;
 }
 #remote
 {
@@ -44,11 +47,19 @@ html, body
 
 #stats
 {
+	display: flex;
+	flex-direction: column;
     position: absolute; right: 0;
     background-color: beige;
     top: 100px; bottom: 0; 
     width: 30%;
 }
+
+#buttonReload img
+{
+    height: 2em;
+}
+
 #remoteSvg {
     height: 100%;
 }
@@ -127,4 +138,29 @@ header {
     100% {
         transform: rotate(0deg);
     }
+}
+
+.box
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px;
+    padding: 10px;
+    background: #F2F2F2;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 2px #fff inset,
+    -1px -1px 2px #fff inset;
+    border-radius: 3px/6px;
+}
+
+.field
+{
+	display: flex;
+	justify-content: center;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+
 }
