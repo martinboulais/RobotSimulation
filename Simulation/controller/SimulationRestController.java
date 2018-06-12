@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Simulation.model.Coord;
+
 
 //controller gérant la methode REST des url
 @RestController
@@ -64,7 +66,6 @@ public class SimulationRestController {
 	 @RequestMapping(method=RequestMethod.GET,value="/robot/environnementRobot")
 	 private String [][] getMatrixKnownEnvironment() {
 		 String[][] retour=new String[x][y];
-		 System.out.println("SC");
 		 retour= simulationService.getMatrixKnownEnvironment();
 		 return retour;
 	 }
@@ -85,8 +86,10 @@ public class SimulationRestController {
 	  * @return
 	  */
 	 @RequestMapping(method=RequestMethod.GET,value="/robot/environnementActuel")
-	 private boolean getMatrixViewRobot() {
-		 return simulationService.getMatrixViewRobot();
+	 private String[][] getMatrixViewRobot() {
+		 String[][] retour=new String[x][y];
+		 retour =simulationService.getMatrixViewRobot();
+		 return retour;
 	 }
 	 
 	 /**
@@ -106,16 +109,20 @@ public class SimulationRestController {
 	  */
 	 @RequestMapping(method=RequestMethod.GET,value="/robot/up")
 	 private boolean up() {
-		 return simulationService.up();
+		 boolean retour=false;
+		 retour= simulationService.up();
+		 return retour;
 	 }
 	 
 	 /**
 	  * Méthode qui fait un déplacement vers le bas si possible
 	  * @return
 	  */
-	 @RequestMapping(method=RequestMethod.POST,value="/robot/down")
+	 @RequestMapping(method=RequestMethod.GET,value="/robot/down")
 	 private boolean down() {
-		 return simulationService.down();
+		 boolean retour=false;
+		 retour= simulationService.down();
+		 return retour;
 	 }
 	 
 	 /**
@@ -124,7 +131,9 @@ public class SimulationRestController {
 	  */
 	 @RequestMapping(method=RequestMethod.GET,value="/robot/left")
 	 private boolean left() {
-		 return simulationService.left();
+		 boolean retour =false;
+		 retour= simulationService.left();
+		 return retour;
 	 }
 	 
 	 /**
@@ -133,7 +142,9 @@ public class SimulationRestController {
 	  */
 	 @RequestMapping(method=RequestMethod.GET,value="/robot/right")
 	 private boolean right() {
-		 return simulationService.right();
+		 boolean retour=false;
+		 retour= simulationService.right();
+		 return retour;
 	 }
 	 
 	 /**
@@ -147,6 +158,38 @@ public class SimulationRestController {
 		 result= simulationService.getInfos();
 		 return result;
 	 }
+	 
+	 @RequestMapping(method=RequestMethod.GET,value="/robot/autoNavON")
+	 private boolean autoNavOn() {
+		 boolean retour =false;
+		 System.out.println("SC");
+		 retour= simulationService.autoNavOn();
+		 System.out.println("SCR"+retour);
+		 return retour;
+	 }
+	 
+	 @RequestMapping(method=RequestMethod.GET,value="/robot/autoNavOff")
+	 private boolean autoNavOff() {
+		 boolean retour =false;
+		 retour= simulationService.autoNavOff();
+		 return retour;
+	 }
+	 
+	 @RequestMapping(method=RequestMethod.GET,value="/robot/dumpNav")
+	 private List<Coord> dumpNav() {
+		 List<Coord> result = new ArrayList<Coord>();
+		 result= simulationService.dumpNav();
+		 return result;
+	 }
+	 
+	 @RequestMapping(method=RequestMethod.GET,value="/robot/searchObst")
+	 private List<Coord> searchObst() {
+		 List<Coord> result = new ArrayList<Coord>();
+		 result= simulationService.searchObst();
+		 return result;
+	 }
+	 
+	
 	 
 	 
 		

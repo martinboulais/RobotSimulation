@@ -63,5 +63,3 @@ public enum Etat {
 		return ret;
 	}
 }
-
-

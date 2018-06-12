@@ -92,9 +92,7 @@ public Map (Coord size) {
 	  }
 	  
 	  
-	  for (Case cases1: oldMap.getListCase()){
-		  System.out.println (cases1.getCoord());
-	  }
+
 	  	  
 	  return oldMap;
   }
