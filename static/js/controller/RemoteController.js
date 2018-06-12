@@ -1,43 +1,42 @@
 import {SceneController} from './SceneController.js';
 import {RemoteView} from '../view/RemoteView.js';
 import * as dir from '../model/directions.js';
+import {correspondances} from "../model/directions.js";
 
 class RemoteController {
     
     constructor(sceneController, user) {
         
         this.sceneController = sceneController;
+
+        this.user = user;
         
         this.remoteView = new RemoteView(this);
 
         this.move = this.move.bind(this);
-
-
+        this.moveRequest = this.moveRequest.bind(this);
+        this.refreshScene = this.refreshScene.bind(this);
     }
-    
-    move(direction)
+
+    move(direction) {
+        this.user.perfMain(this.moveRequest, direction);
+    }
+
+    moveRequest(direction)
     {
-        //Suposing we have te position of the robot from ajax request
-        switch(direction)
-        {
-            case dir.NORTH:
-                this.robotY -= 1;
-                break;
-                
-            case dir.SOUTH:
-                this.robotY += 1;
-                break;
-                
-            case dir.EAST:
-                this.robotX += 1;
-                break;
-            
-            case dir.WEST:
-                this.robotX -= 1;
-                break;
+        this.user.setMain(true);
+        $.ajax({
+            url: "/robot/deplacement/" + this.user.getLogin() + "/" + this.user.getToken() + "/" + correspondances[direction-1],
+            method: 'GET',
+            success: this.refreshScene
+        });
+    }
+
+    refreshScene(coords) {
+        if(coords[0] !== -1 && coords[1] !== -1) {
+
+            this.sceneController.moveRobot(coords[1], coords[0]);
         }
-        
-            this.sceneController.moveRobot(this.robotX, this.robotY);
     }
 }
 

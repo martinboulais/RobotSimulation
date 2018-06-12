@@ -1,5 +1,3 @@
-import {Map} from './Map.js';
-
 class MapManager {
     
     constructor(w, h) {

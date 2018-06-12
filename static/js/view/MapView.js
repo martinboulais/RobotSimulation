@@ -1,97 +1,78 @@
 class MapView {
-    constructor(canvas,layers) {
-        this.c=canvas;
-        this.layers=layers;
-        this.tileset={};
-        this.ready_load=0;
-        this.scale_factor=1;
+    
+    constructor(canvas, spriteSrc) {
+    	
+        this.c = canvas;
+
+        this.datas = [[]];
+        this.height = this.datas.length;
+        this.width = this.datas[0].length;
+
+        this.tileHeight = 64;
+        this.tileWidth = 64;
+
+        this.spriteSrc = spriteSrc;
+        this.nbTilesInLine = 5;
+
+        this.tileset = $("<img />", { src:this.spriteSrc, height: this.tileHeight, width: this.tileWidth})[0];
         
-        this.renderLayer=this.renderLayer.bind(this);
-        this.renderLayers=this.renderLayers.bind(this);
+        this.scale = 1;
+
+        this.rerenderall = this.rerenderall.bind(this);
+        this.load = this.load.bind(this);
+
+        this.getWidth = this.getWidth.bind(this);
+        this.getHeight = this.getHeight.bind(this);
     }
 
-    renderLayer(layer){
-        let img_test=$("#img_test_id")[0];
-        
-        if (layer.type !== "tilelayer" || !layer.opacity) { return; }
-        //let s = this.c.canvas.cloneNode();
-        let size = this.data.tilewidth;
-        //s = s.getContext("2d");
-        if (this.layers.length < this.data.layers.length) {
-            let s_y_t_1=0;
-            layer.data.forEach(function(tile_idx, i) {
-                if (!tile_idx) { return; }
-                let img_x, img_y, s_x, s_y,s_index_x,s_index_y;
-                //CAUTION current index of the image is the index-1
-                let image_loaded = this.tileset[tile_idx-1];
-                //index into map of the current elt
-                s_index_x=(i % layer.width);
-                s_index_y=~~(i / layer.width);
-              
-                s_x = (s_index_x)  * size/this.scale_factor;
-                s_y = (s_index_y) * (size)/this.scale_factor;
-                //draw the current image with an adjusted y position according to the difference between used tiledheight and current image heigt
-                this.c.drawImage(image_loaded,
-                            s_x, (s_y),image_loaded.width/this.scale_factor, image_loaded.height/this.scale_factor);
-               //draw current image only for test
-            //this.c.drawImage(s.canvas, 0, 0);
-                
-          }.bind(this));
-          //this.layers.push(s.canvas.toDataURL());
-          //s.drawImage(s.canvas, 0, 0);
-        }
-        else {
-          this.layers.forEach(function(src) {
-            let i = $("<img />", { src: src })[0];
-            this.c.drawImage(i, 0, 0);
-          });
-        }
-      }
+    rerenderall() {
 
+        for(let i = 0; i < this.width; i++) {
+            for(let j = 0; j < this.height; j++) {
+                let tile = parseInt(this.datas[i][j]);
 
-      renderLayers(layers) {
-        layers = $.isArray(layers) ? layers : this.data.layers;
-        layers.forEach(this.renderLayer);
-      }
-    
-      rerenderall(){
-        //clear old display
-        this.c.clearRect(0, 0, this.c.canvas.width, this.c.canvas.height);
-        //remove scene layerrs
-        this.layers=[];
-        //ask for rerender
-        this.renderLayers(this.data.layers);
-      }
+                this.c.drawImage(
+                    this.tileset,
 
-      loadready(){
-        //check if all images are loaded
-        this.ready_load++;
-        if(this.ready_load>=Object.keys(this.tileset).length){
-            //if all images are loaded launch the render
-            this.renderLayers(this.data.layers);
+                    (tile % this.nbTilesInLine) * this.tileWidth,
+                    ((tile - tile%this.nbTilesInLine) / this.nbTilesInLine) * this.tileHeight,
+
+                    this.tileWidth,
+                    this.tileHeight,
+
+                    this.tileWidth * j,
+                    this.tileHeight * i,
+
+                    this.tileWidth * this.scale,
+                    this.tileHeight * this.scale);
             }
         }
-    
-      loadTileset(json) {
-        this.data = json;
-        //get back tilesets from json map (image URL/ code)
-        this.tileset = json.tilesets[0].tiles;
-        let keys = Object.keys(this.tileset);
-        //replace all object into tiled set by dom images    
-        keys.forEach(function(key){
-          this.tileset[key]=$("<img />", { src:this.tileset[key].image, height:'64px', width:'64px'})[0];
-          //each time an image is loaded check if all images are loaded
-          this.tileset[key].onload=$.proxy(this.loadready, this)
-        }.bind(this));
-      }
-    
-     load(name) {
-        return $.ajax(
-            {
-                url: "./data/" + name + ".json"
-            }
-        ).done($.proxy(this.loadTileset, this));
-     }
+    }
+
+    load(datas) {
+        let ret = false;
+
+        this.datas = datas;
+        let newHeight = this.datas.length;
+        let newWidth = this.datas[0].length;
+
+        if(this.width !== newWidth || this.height !== newHeight)
+        {
+            ret = true;
+        }
+
+        this.height = newHeight;
+        this.width = newWidth;
+
+        return ret;
+    }
+
+    getWidth() {
+        return this.width * this.tileWidth;
+    }
+    getHeight() {
+        return this.height * this.tileHeight;
+    }
 }
 
 export {MapView};

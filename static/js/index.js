@@ -9,41 +9,38 @@ $(function () {
     {
         new Message('error', message);
     }
-	
+
     //Verify if the user is connected
     let user = User.restore();
 
-    if(user == null)
-    {
-        $("#forms").css("display", "inherit");
-    } else {
+	if(user == null)
+	{
+		$("#navLinks").hide(); //Do not show navLinks
+	} else {
+		user.verify(function(retour) {
+			if(retour === false) {
+				localStorage.removeItem('user');
+                $("#navLinks").hide(); //Do not show navLinks
+			}
+			else
+			{
+				$("#down").hide(); //Do not show forms
+				$("#navLinks").show(); //Show navLinks
 
-        user.verify(function(retour) {
-
-            if(retour === false) {
-                $("#forms").css("display", "inherit");
-                localStorage.removeItem('user');
-            }
-            else
-            {
-                $("#navLinks").css("display", "inherit");
-
-                user.isAdmin(function(retour) {
-
-                    if(retour === true)
-                        $("#admin-link").css("display", "inherit");
-                });
-            }
-        });
-    }
+				user.isAdmin(function(retour) {
+					if(retour === false)
+						$("#admin-link").hide(); //Do not show Admin link if not Admin
+				});
+			}
+		});
+	}
 
     $("#i_submit").click(signUp);
     $("#c_submit").click(signIn);
-    $("#deconnect").click(deconnect);
 
+    $("#buttonDisconnect").click(deconnect);
 });
     
-
 
 function signUp(e)
 {
@@ -110,7 +107,7 @@ function signInRequest(login, pass)
 
                 let user = new User(login, result);
                 localStorage.setItem('user', JSON.stringify(user));
-                window.location.replace('.');
+                window.location.href = 'index.html';
             } else {
 
                 let error = new Message('error', 'Identifiants incorrects').show();
@@ -119,8 +116,27 @@ function signInRequest(login, pass)
     });
 }
 
-function deconnect() {
-
+function deconnect()
+{
     localStorage.removeItem("user");
-    window.location.replace('.');
+    window.location.href = 'index.html';
 }
+
+//Function Puting User in Queue
+function putUserInQueue(login, token){
+	$.ajax({
+        url: "users/queue/in/"+login+"/"+token,
+        data: JSON.stringify({login:String(login),password:String(pass)}),
+        contentType: "application/json",
+        method: 'GET',
+        success: function(result)
+        {
+        	if (answer === true){
+				//TODO	Queue Management, See with Antoine
+			} else {
+				let error = new Message('error', 'User is not registered').show();
+			}
+        }
+    });
+}
+

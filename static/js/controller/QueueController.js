@@ -42,7 +42,6 @@ class QueueController {
 
     refresh()
     {
-        console.log('hey');
         $.ajax({
             url: "/users/" + ((this.actif) ? "demande/" : 'state/') + this.user.getLogin() + "/" + this.user.getToken(),
             method: 'GET',
@@ -51,8 +50,8 @@ class QueueController {
     }
 
     refreshTreatment(r) {
-    	console.log(r);
         this.actif = r > 0;
+        this.user.setMain(r === 0);
         this.queueView.refresh(r);
     }
 }

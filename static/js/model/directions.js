@@ -1,4 +1,5 @@
-export const NORTH = "up";
-export const WEST = "right";
-export const SOUTH = "down";
-export const EAST = "left";
+export const NORTH = 1;
+export const WEST = 2;
+export const SOUTH = 3;
+export const EAST = 4;
+export const correspondances = ['up', 'left', 'down', 'right'];

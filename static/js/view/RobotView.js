@@ -25,8 +25,16 @@ class RobotView {
         this.refresh = this.refresh.bind(this);
         this.draw = this.draw.bind(this);
         this.goTo = this.goTo.bind(this);
+        this.setPos = this.setPos.bind(this);
+        this.getNextPosition = this.getNextPosition.bind(this);
     }
-    
+
+    setPos(x, y) {
+
+        this.x = x*tileWidth;
+        this.y = y*tileHeight;
+    }
+
     //Refresh the robots informations such as real coords, frame
     refresh() {
         
@@ -90,6 +98,27 @@ class RobotView {
     goTo(x, y) {
         this.nextTiles.push(new Tile(x, y));
     }
+
+    clearSteps() {
+
+        if(this.nextTiles.length > 0)
+        {
+            let currentStep = this.nextTiles[0];
+            this.nextTiles = [];
+            this.nextTiles.push(currentStep);
+        }
+    }
+
+    getNextPosition() {
+        if(this.nextTiles.length === 0)
+        {
+            return new Tile(this.x/tileWidth, this.y/tileHeight);
+        }
+        else
+        {
+            return this.nextTiles[0];
+        }
+    }
 }
 
 class Tile {
@@ -101,6 +130,7 @@ class Tile {
 
         this.getXCoord = this.getXCoord.bind(this);
         this.getYCoord = this.getYCoord.bind(this);
+        this.equals = this.equals.bind(this);
     }
     
     getXCoord() {
@@ -109,6 +139,10 @@ class Tile {
     
     getYCoord() {
         return this.y * tileHeight;
+    }
+
+    equals(tile) {
+        return (this.getXCoord() === tile.getXCoord() && this.getYCoord() === tile.getYCoord);
     }
 }
 
