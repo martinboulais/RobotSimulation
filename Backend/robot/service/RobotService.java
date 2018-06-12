@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import Backend.robot.model.Coord;
 import Backend.user.model.User;
 
 @Service
@@ -215,4 +216,75 @@ public class RobotService {
         }
         return result;
     }
+    
+	public List<Coord> dumpNav(User user) {
+		List<Coord> result = new ArrayList<Coord>();
+        try
+        {
+            String adminResourceUrl=DIALOG_BEJAVA+"/robot/dumpNav";
+            RestTemplate restTemplate = new RestTemplate();
+            List answer = restTemplate.getForObject(adminResourceUrl, List.class);
+            result = answer;
+        }
+        catch(Exception e)
+        {
+            System.out.println("Erreur : "+e);
+
+        }
+        return result;
+	
+	}
+
+	public List<Coord> searchObst(User user) {
+		List<Coord> result = new ArrayList<Coord>();
+        try
+        {
+            String adminResourceUrl=DIALOG_BEJAVA+"/robot/searchObst";
+            RestTemplate restTemplate = new RestTemplate();
+            List answer = restTemplate.getForObject(adminResourceUrl, List.class);
+            result = answer;
+        }
+        catch(Exception e)
+        {
+            System.out.println("Erreur : "+e);
+
+        }
+        return result;
+	}
+
+	public boolean autoNavOn(User user) {
+		boolean retour=false;
+		try
+        {
+			System.out.println("US");
+            String adminResourceUrl=DIALOG_BEJAVA+"/robot/autoNavON";
+            RestTemplate restTemplate = new RestTemplate();
+            retour = restTemplate.getForObject(adminResourceUrl, Boolean.class);
+            System.out.println("USR"+retour);
+        }
+        catch(Exception e) {
+            System.out.println("retour"+e);
+
+            retour = false;
+        }
+		return retour;
+	}
+
+	public boolean autoNavOff(User user) {
+		boolean retour=false;
+		try
+        {
+            String adminResourceUrl=DIALOG_BEJAVA+"/robot/autoNavOff";
+            RestTemplate restTemplate = new RestTemplate();
+            retour = restTemplate.getForObject(adminResourceUrl, Boolean.class);
+        }
+            
+        catch(Exception e) {
+            System.out.println("retour"+e);
+
+            retour = false;
+        }
+		return retour;
+        
+	}	
 }

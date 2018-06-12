@@ -29,6 +29,15 @@ public class UserService {
     private Calendar dateLastResquest;
     private Integer x=25;
     private Integer y=25;
+    
+    public void setUpQueue() {
+    	
+    	User mainUser = this.userRepository.findMainUser();
+    	if(mainUser != null)
+    	{
+    		this.loginLastRequestUser.put(mainUser.getLogin(), new GregorianCalendar());
+    	}
+    }
 
     /**
      *
@@ -86,6 +95,11 @@ public class UserService {
         for (User u:listqueue) {
             u.setQueue(u.getQueue()-1);        // enlever 1 a tout les queue de cette liste
             updateUser(u);//update la liste en la revoyant dans update user
+            
+            if(loginLastRequestUser.get(u.getLogin()) == null)
+            {
+        		this.loginLastRequestUser.put(u.getLogin(), new GregorianCalendar());
+            }
         }
         
     }
@@ -207,11 +221,13 @@ public class UserService {
         	System.out.println("user valide");
 			Calendar currentDate= new GregorianCalendar();
 			loginLastRequestUser.put(login, currentDate);
+			
 			if(!this.isMainUser())
 			{
 				return -2;
 			}
-    		afkMainUser();
+    		
+			afkMainUser();
         	System.out.println("AFK ok");
     		verifyQueue();
     		return userRepository.findByLogin(login).getQueue();
@@ -221,19 +237,11 @@ public class UserService {
     }
     
     public boolean isMainUser() {
+    	
     	//return true si pas de main user
 		if (userRepository.findByQueue(0)==null) {
+			System.out.println("Hey!");
 			//Pas de main user
-			System.out.println("1!");
-			return false;
-		} else if (loginLastRequestUser.size() == 0)
-		{
-			System.out.println("2!");
-			return false;
-		} else if(loginLastRequestUser.containsKey(userRepository.findMainUser().getLogin())==false) {
-
-			System.out.println("3!");
-			//ou main user pas connecté
 			return false;
 		}
 		
@@ -254,15 +262,20 @@ public class UserService {
      * @return
      */
 	public boolean afkMainUser(){
-		boolean ret=false;	
-		loginLastRequestUser.get((userRepository.findMainUser().getLogin())).add(Calendar.SECOND, 30);
-		Calendar currentDate= new GregorianCalendar();
-		if (currentDate.compareTo(loginLastRequestUser.get(userRepository.findMainUser().getLogin()))>0) {
-    		updateQueue();
-    		ret=true;
-    	}
-		else {
-			loginLastRequestUser.get((userRepository.findMainUser().getLogin())).add(Calendar.SECOND, -30);
+		boolean ret=false;
+		System.out.println(loginLastRequestUser);
+		if (userRepository.findMainUser().getLogin()!=null && loginLastRequestUser.get((userRepository.findMainUser().getLogin()))!=null) 
+		{
+			loginLastRequestUser.get((userRepository.findMainUser().getLogin())).add(Calendar.SECOND, 30);
+			Calendar currentDate= new GregorianCalendar();
+			
+			if (currentDate.compareTo(loginLastRequestUser.get(userRepository.findMainUser().getLogin()))>0) {
+				updateQueue();
+				ret=true;
+			}
+			else {
+				loginLastRequestUser.get((userRepository.findMainUser().getLogin())).add(Calendar.SECOND, -30);
+			}
 		}
     	return ret;
     }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import Backend.robot.model.Coord;
 import Backend.robot.service.RobotService;
 import Backend.simulation.service.SimulationService;
 import Backend.user.service.UserService;
@@ -71,7 +72,7 @@ public class RobotRestController {
     public String[][] getEnvtGlobal(@PathVariable String login, @PathVariable long token) {
     	String[][] envtGlobal=new String[x][y];
 		//Verify user's token / user is main
-        if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
+        if (userService.verifyUser(login,token))
         {
             envtGlobal = robotService.getEnvtGlobal(userService.findByLogin(login));
         }
@@ -87,14 +88,14 @@ public class RobotRestController {
     @RequestMapping(method=RequestMethod.GET,value="/robot/environnementActuel/{login}/{token}")
     public String[][] getEnvtActual(@PathVariable String login, @PathVariable long token) {
     	String[][] envtActual=new String[x][y];
-        System.out.println("UC");
+
         //Verify user's token / user is main
-        //if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
-        //{
+        if (userService.verifyUser(login,token))
+        {
             envtActual = robotService.getEnvtActual(userService.findByLogin(login));
 
-        //}
-            System.out.println("UCR "+envtActual);
+        }
+
         return envtActual;
     }
 
@@ -108,7 +109,7 @@ public class RobotRestController {
     	List<Integer> actualCoord = new ArrayList<Integer>();
 
         //Verify user's token / user is main
-        if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
+        if (userService.verifyUser(login,token))
         {
             actualCoord = robotService.getStateRobot(userService.findByLogin(login));
         }
@@ -126,10 +127,64 @@ public class RobotRestController {
         List<Integer> data = new ArrayList<Integer>();
 
         //Verify user's token / user is main
-       if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
+       if (userService.verifyUser(login,token))
         {
 
             data = robotService.getData(userService.findByLogin(login));
+        }
+        return data;
+    }
+    
+    @RequestMapping(method=RequestMethod.GET,value="/robot/autoNavOn/{login}/{token}")
+    public boolean autoNavOn(@PathVariable String login, @PathVariable long token) {
+        boolean data = false;
+       
+        //Verify user's token / user is main
+       if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
+        {
+    		System.out.println("UC");
+            data = robotService.autoNavOn(userService.findByLogin(login));
+            System.out.println("UCR"+data);
+        }
+        return data;
+    }
+    
+    
+    @RequestMapping(method=RequestMethod.GET,value="/robot/autoNavOff/{login}/{token}")
+    public boolean autoNavOff(@PathVariable String login, @PathVariable long token) {
+    	boolean data = false;
+       
+        //Verify user's token / user is main
+       if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
+        {
+    		
+            data = robotService.autoNavOff(userService.findByLogin(login));
+        }
+        return data;
+    }
+    
+    @RequestMapping(method=RequestMethod.GET,value="/robot/dumpNav/{login}/{token}")
+    public List<Coord> dumpNav(@PathVariable String login, @PathVariable long token) {
+        List<Coord> data = new ArrayList<Coord>();
+       
+        //Verify user's token / user is main
+       if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
+        {
+    		
+            data = robotService.dumpNav(userService.findByLogin(login));
+        }
+        return data;
+    }
+    
+    @RequestMapping(method=RequestMethod.GET,value="/robot/searchObst/{login}/{token}")
+    public List<Coord> searchObst(@PathVariable String login, @PathVariable long token) {
+        List<Coord> data = new ArrayList<Coord>();
+       
+        //Verify user's token / user is main
+       if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
+        {
+    		
+            data = robotService.searchObst(userService.findByLogin(login));
         }
         return data;
     }

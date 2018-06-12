@@ -23,6 +23,7 @@ public class UserRestController {
 
     @Autowired
     private UserService userService;
+    
     /**
      *
      * @return la liste de tous les users avec leurs attributs
@@ -84,6 +85,7 @@ public class UserRestController {
     @RequestMapping(method=RequestMethod.POST,value="/users/login")
     public long isLoginIn(@RequestBody User user) {
         if (userService.isLoginIn(user)) {
+        	userService.setUpQueue();
         	return (userService.giveToken(user));
         }
         return -1;
@@ -167,8 +169,10 @@ public class UserRestController {
 	 * @return place dans la queue
 	 */
     @RequestMapping(method=RequestMethod.GET, value="/users/state/{login}/{token}")
-    public int userState(@PathVariable String login,@PathVariable long token) {
-        if(!userService.isMainUser())
+    public int userState(@PathVariable String login, @PathVariable long token) {
+        
+    	
+    	if(userService.verifyUser(login, token) && !userService.isMainUser())
         {
         	return -2;
         }
