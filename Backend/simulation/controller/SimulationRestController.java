@@ -43,7 +43,7 @@ public class SimulationRestController {
      * @param
      * @return boolean to verify the good execution
      */
-    @RequestMapping(method=RequestMethod.GET,value="/simulation/on1/{login}/{token}/{x}/{y}/{nbObstacle}/{nbSpeedBumps}")
+    @RequestMapping(method=RequestMethod.GET,value="/simulation/on/{login}/{token}/{x}/{y}/{nbObstacle}/{nbSpeedBumps}")
     public boolean startSimulation(@PathVariable String login,@PathVariable long token,@PathVariable Integer x,
     		@PathVariable Integer y,@PathVariable Integer nbObstacle, @PathVariable Integer nbSpeedBumps) {
 

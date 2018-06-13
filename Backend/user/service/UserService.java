@@ -218,7 +218,6 @@ public class UserService {
      */
     public int askingConnection(String login, long token) {
     	if (verifyUser(login, token)) {
-        	System.out.println("user valide");
 			Calendar currentDate= new GregorianCalendar();
 			loginLastRequestUser.put(login, currentDate);
 			
@@ -228,7 +227,6 @@ public class UserService {
 			}
     		
 			afkMainUser();
-        	System.out.println("AFK ok");
     		verifyQueue();
     		return userRepository.findByLogin(login).getQueue();
     	}
@@ -239,12 +237,10 @@ public class UserService {
     public boolean isMainUser() {
     	
     	//return true si pas de main user
-		if (userRepository.findByQueue(0)==null) {
-			System.out.println("Hey!");
-			//Pas de main user
+		if (userRepository.findMainUser() == null) {
 			return false;
 		}
-		
+
 		return true;
     }
     
@@ -263,7 +259,6 @@ public class UserService {
      */
 	public boolean afkMainUser(){
 		boolean ret=false;
-		System.out.println(loginLastRequestUser);
 		if (userRepository.findMainUser().getLogin()!=null && loginLastRequestUser.get((userRepository.findMainUser().getLogin()))!=null) 
 		{
 			loginLastRequestUser.get((userRepository.findMainUser().getLogin())).add(Calendar.SECOND, 30);
@@ -286,13 +281,10 @@ public class UserService {
 	public boolean verifyQueue() {
 		boolean ret=false;
 		List<String> listRemove = new ArrayList<String>();
-		System.out.println(loginLastRequestUser.keySet());
 		for (String login : loginLastRequestUser.keySet()) {
-			System.out.println(login);
 			loginLastRequestUser.get(login).add(Calendar.SECOND, 30);
 			Calendar currentDate= new GregorianCalendar();
-			System.out.println(currentDate);
-			System.out.println(loginLastRequestUser.get(login));
+
 			if (currentDate.compareTo(loginLastRequestUser.get(login))>0) { //Si plus de co depuis 30sec	    		
 				listRemove.add(login);
 	    		ret=true;

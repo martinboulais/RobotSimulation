@@ -69,7 +69,6 @@ public class RobotService {
     	String[][] result=new String[x][y];
         try
         {
-        	System.out.println("US");
             String adminResourceUrl = DIALOG_BEJAVA+"/robot/environnementActuel";
             RestTemplate restTemplate = new RestTemplate();
             result = restTemplate.getForObject(adminResourceUrl, String[][].class);
@@ -78,7 +77,6 @@ public class RobotService {
         catch(Exception e) {
             System.out.println("Erreur : "+e);
         }
-        System.out.println("USR"+result);
         return result;
     }
 
@@ -115,14 +113,13 @@ public class RobotService {
     public List<Integer> moveRobot(User user, String direction) {
         List<Integer> result = new ArrayList<Integer>();
 
-        System.out.println("US");
         switch(direction)
         {
             case "up":
                 String adminResourceUrlUp=DIALOG_BEJAVA+"/robot/up";
                 RestTemplate restTemplateUp = new RestTemplate();
                 Boolean okUp = restTemplateUp.getForObject(adminResourceUrlUp, Boolean.class);
-                System.out.println("USUP");
+
                 if (okUp) {
                     String adminResourceUrl=DIALOG_BEJAVA+"/robot/etat";
                     RestTemplate restTemplate = new RestTemplate();
@@ -139,12 +136,12 @@ public class RobotService {
                 String adminResourceUrlDown=DIALOG_BEJAVA+"/robot/down";
                 RestTemplate restTemplateDown = new RestTemplate();
                 Boolean okDown = restTemplateDown.getForObject(adminResourceUrlDown, Boolean.class);
-                System.out.println("USDOWN");
+
                 if (okDown) {
                     String adminResourceUrl=DIALOG_BEJAVA+"/robot/etat";
                     RestTemplate restTemplate = new RestTemplate();
                     result = restTemplate.getForObject(adminResourceUrl, List.class);
-                    System.out.println("USDOW if retour"+ result);
+
                 }
                 else
                 {
@@ -186,12 +183,9 @@ public class RobotService {
                     result.add(-1);
                 }
                 break;
-
-            default :
-                System.out.println("Direction non lue");
         }
 
-        System.out.println("USR"+result);
+
         return result;
     }
 
@@ -256,11 +250,9 @@ public class RobotService {
 		boolean retour=false;
 		try
         {
-			System.out.println("US");
             String adminResourceUrl=DIALOG_BEJAVA+"/robot/autoNavON";
             RestTemplate restTemplate = new RestTemplate();
             retour = restTemplate.getForObject(adminResourceUrl, Boolean.class);
-            System.out.println("USR"+retour);
         }
         catch(Exception e) {
             System.out.println("retour"+e);

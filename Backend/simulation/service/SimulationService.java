@@ -53,12 +53,11 @@ public class SimulationService {
         {
             String adminResourceUrl=DIALOG_BEJAVA+"/simulation/on1/"+x+"/"+y+"/"+nbObstacles+"/"+nbSpeedBumps;
             List<Integer> parameters = new ArrayList<Integer>();
-            System.out.println("Dans le user service");
+
             RestTemplate restTemplate = new RestTemplate();
-            System.out.println(adminResourceUrl);
+
             Boolean answer = restTemplate.getForObject(adminResourceUrl,  Boolean.class);
             retour = answer;
-            System.out.println("Dans le user service retour "+retour);
         }
         catch(Exception e) {
             retour = false;

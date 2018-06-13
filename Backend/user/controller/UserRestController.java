@@ -179,6 +179,18 @@ public class UserRestController {
     	
     	return userService.userState(login, token);
     }
+    
+    /**
+     * Previens que le main a fait une action
+     * @param login
+     * @param token
+     */
+    @RequestMapping(method=RequestMethod.GET, value="/users/action/{login}/{token}")
+    public int userActionPerformed(@PathVariable String login,@PathVariable long token) {
+        userService.userAction(login, token);
+        
+        return userService.userState(login, token);
+    }
 }
 
 

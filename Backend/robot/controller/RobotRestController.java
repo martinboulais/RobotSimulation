@@ -39,7 +39,6 @@ public class RobotRestController {
             //Verify user's token / user is main
         if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
         {
-        	System.out.println("UC");
             newCoord = robotService.moveRobot(userService.findByLogin(login), direction);
         }
 
@@ -142,9 +141,7 @@ public class RobotRestController {
         //Verify user's token / user is main
        if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
         {
-    		System.out.println("UC");
             data = robotService.autoNavOn(userService.findByLogin(login));
-            System.out.println("UCR"+data);
         }
         return data;
     }
@@ -170,7 +167,6 @@ public class RobotRestController {
         //Verify user's token / user is main
        if (userService.verifyUser(login,token) && userService.isUserMain(userService.findByLogin(login)))
         {
-    		
             data = robotService.dumpNav(userService.findByLogin(login));
         }
         return data;
