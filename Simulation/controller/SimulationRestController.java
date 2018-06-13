@@ -162,9 +162,7 @@ public class SimulationRestController {
 	 @RequestMapping(method=RequestMethod.GET,value="/robot/autoNavON")
 	 private boolean autoNavOn() {
 		 boolean retour =false;
-		 System.out.println("SC");
 		 retour= simulationService.autoNavOn();
-		 System.out.println("SCR"+retour);
 		 return retour;
 	 }
 	 
@@ -188,10 +186,4 @@ public class SimulationRestController {
 		 result= simulationService.searchObst();
 		 return result;
 	 }
-	 
-	
-	 
-	 
-		
-
 }

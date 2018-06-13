@@ -125,16 +125,16 @@ public String toString() {
 
 public static void main(String[] args) {
 	RobotControler rct = new RobotControler();
-	System.out.println(rct);
+
 	rct.down();
-	System.out.println(rct);
+
 	rct.up();
-	System.out.println(rct);
+
 	rct.left();
-	System.out.println(rct);
-	System.out.println(rct.getView());
+
+
 	rct.right();
-	System.out.println(rct);
+
 
 }
 

@@ -241,7 +241,6 @@ public class Simulation {
 		  }
 		  else {
 			  this.measure.incNbMetObst();
-System.out.println("Obst !!!");
 		  }
 	  }
 
@@ -443,7 +442,6 @@ System.out.println("Obst !!!");
    */
   public void affEnvironnement(){
 	  this.matrixEnvironment = this.addRobotInMatrix(this.matrixEnvironment);
-	  System.out.println(printMatrix(matrixEnvironment,environment.getSize().x,environment.getSize().y));
 
   }
   
@@ -452,7 +450,6 @@ System.out.println("Obst !!!");
    */
   public void affView(){
 	this.matrixViewRobot = this.addRobotInMatrix(this.matrixViewRobot);
-	System.out.println(printMatrix(matrixViewRobot,environment.getSize().x,environment.getSize().y));
 
   }
   
@@ -461,7 +458,6 @@ System.out.println("Obst !!!");
    */
   public void affRobotDiscoveredMap(){
 	  String[][] matrixRobotEnv = this.getMatrixKnownEnvironment();
-	  System.out.println(printMatrix(matrixRobotEnv,environment.getSize().x,environment.getSize().y));
 
   }
 

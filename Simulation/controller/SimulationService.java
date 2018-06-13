@@ -126,11 +126,9 @@ public class SimulationService {
      * * @return un string correspondant à l'environnement vu à l'instant t par le robot
      */
     public  String[][] getMatrixViewRobot(){
-     	String[][] envoi=new String[x][y];   
-     	System.out.println("SS");
+     	String[][] envoi=new String[x][y];
 		if (simulationEnCours) {
 			envoi=simulation.getMatrixViewRobot();
-			System.out.println("SSR "+envoi);
 		}
 				
 		return envoi;
@@ -226,10 +224,8 @@ public class SimulationService {
 	public boolean autoNavOn() {
 		boolean retour = false;    
 		if (!autoNavEnCours) {	
-			System.out.println("SS");
     		this.autoNav = new AutoNav (this.simulation);    
     		autoNavEnCours=true;
-    		System.out.println("SSR"+retour);
     		retour=true;
 		}
 		return retour;

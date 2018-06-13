@@ -76,16 +76,13 @@ public Map (Coord size) {
 	  for (Case cases1 :newMap.getListCase()){
 		  Integer flag = 0;
 		  for (Case case2 : oldMap.getListCase()){
-			  //System.out.println ("case1"+cases1.getCoord()+"case2"+case2.getCoord());
 			  if (cases1.getCoord().equals(case2.getCoord())){
 				  flag=1;
-				  //System.out.println ("flag1");
 			  }
 					
 		  }
 		  //Signifit qu'une nouvelle case à été découverte
 		  if (flag==0){
-			  //System.out.println ("ajout"+cases1.getCoord());
 			  oldMap.addCase (cases1);
 			  
 		  }

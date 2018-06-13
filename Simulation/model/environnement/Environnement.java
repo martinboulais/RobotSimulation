@@ -150,8 +150,8 @@ public class Environnement {
 	  String[][] matrix = new String[size.x][size.y];
 	  for (int j = 0 ; j < getSize().x ; j++ ){
 		  for (int i = 0 ; i < getSize().x ; i++ ){
-			  matrix[i][j] = getEtat(new Coord(i, j)).toAff();
-			  //matrix[i][j] = getEtat(new Coord(i, j)).toSend();
+			  //matrix[i][j] = getEtat(new Coord(i, j)).toAff();
+			  matrix[i][j] = getEtat(new Coord(i, j)).toSend();
 		  }
 	  }
 	return matrix; 
